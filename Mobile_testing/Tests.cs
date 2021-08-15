@@ -3,12 +3,13 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.Enums;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
 using System;
 using Xamarin.UITest;
 using Xamarin.UITest.Android;
 using Xamarin.UITest.Queries;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Mobile_testing    
 {
@@ -54,6 +55,12 @@ namespace Mobile_testing
             
             appiumDriver = new AndroidDriver<AndroidElement>(new Uri("http://127.0.0.1:4723/wd/hub"), options);
             Assert.NotNull(appiumDriver.Context);
+        }
+
+        [Test]
+        public void CloudTest()
+        {
+            AppInstaller.OnCreate();
         }
     }
 }
