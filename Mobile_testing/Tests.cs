@@ -43,37 +43,45 @@ namespace Mobile_testing
         {
            // AppResult[] result = app.Query(iPhone12);
             app = AppInstaller.StartApp(Xamarin.UITest.Platform.Android, newApp);
-          // app.Repl();
+          //app.Repl();
             app.Tap(c => c.Id("nextView"));
             app.Tap(c => c.Id("nextView"));
             app.Tap(c => c.Id("nextView"));
             app.Tap(c => c.Id("nextView"));
             app.Tap(c => c.Id("nextView"));
             app.Tap(c => c.Id("searchPlate"));
+            app.Repl();
             app.DismissKeyboard();
             app.EnterText("iphone 12");
-            app.DismissKeyboard();
             app.ScrollDownTo(c => c.Marked("Смартфон Apple iPhone 12 128GB (зеленый)"));
             app.Tap(c => c.Marked("Смартфон Apple iPhone 12 128GB (зеленый)"));
+            app.Tap(c => c.Marked("Navigate up"));
             app.ScrollDownTo(c => c.Id("offerPriceRangeView"));
             Assert.IsTrue(app.Query(x => x.Id("offerPriceRangeView")).Any());
-          //  string[] price = app.Query(c => c.Id("offerPriceRangeView").Invoke("getText")).Cast<String>().ToArray();
-          //  Assert.AreEqual("2400,00 р.", price, "Incorrect price value");
-            
-         
+            var price = (app.Query(c => c.Id("offerPriceRangeView"))[0].Text);
+            var price2 = price.Substring(0, 7);
+          
+            //var price = app.Query(c => c.Id("offerPriceRangeView").Invoke("getText")).ToList();
+            Assert.AreEqual("2400,00", price2, "Incorrect price value");
+
+
         }
 
         [Test]
         public void AppiumTest()
         {
             AppiumOptions options = new AppiumOptions();
-            options.AddAdditionalCapability(MobileCapabilityType.DeviceName, "Oreo");
             options.AddAdditionalCapability(MobileCapabilityType.PlatformName, "Android");
+            options.AddAdditionalCapability(MobileCapabilityType.PlatformVersion, "8.0");
+            options.AddAdditionalCapability(MobileCapabilityType.DeviceName, "Oreo2");
+            options.AddAdditionalCapability(AndroidMobileCapabilityType.AppPackage, "by.onliner.catalog");
+            options.AddAdditionalCapability(AndroidMobileCapabilityType.AppActivity, "by.onliner.catalog.splash.SplashActivity");
+            options.AddAdditionalCapability(AndroidMobileCapabilityType.AppWaitActivity, "by.onliner.catalog.activity.MainActivity");
             options.AddAdditionalCapability(MobileCapabilityType.App, newApp);
-            options.AddAdditionalCapability("chromedriverExecutable", @"D:\webdriver\chromedriver.exe");
+            options.AddAdditionalCapability(MobileCapabilityType.FullReset, false);
 
 
-            appiumDriver = new AndroidDriver<AndroidElement>(new Uri("http://127.0.0.1:4723/wd/hub"), options);
+           appiumDriver = new AndroidDriver<AndroidElement>(new Uri("http://127.0.0.1:4723/wd/hub"), options);
             appiumDriver.FindElement(By.Id("nextView")).Click();
             appiumDriver.FindElement(By.Id("nextView")).Click();
             appiumDriver.FindElement(By.Id("nextView")).Click();
